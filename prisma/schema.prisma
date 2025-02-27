@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum StockMovementType {
+  PROHIBITED
+  EXIT
+  CREATED
+  RETURN
+}
+
+model User {
+  id                String              @id @default(uuid())
+  name              String
+  role              String              @default("USER")
+  stockMovements    StockMovement[]
+  MachineryMovement MachineryMovement[]
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+}
+
+model Category {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Stock       Stock[]
+}
+
+model Stock {
+  id                String          @id @default(uuid())
+  sku               String          @unique
+  name              String
+  description       String
+  price             Float
+  minStock          Float
+  unitOfMeasurement String
+  status            String
+  categoryId        Int
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+  category          Category        @relation(fields: [categoryId], references: [id])
+  stockMovements    StockMovement[]
+}
+
+model StockMovement {
+  id              String            @id @default(uuid())
+  type            StockMovementType
+  quantity        Float
+  stockId         String
+  locationStocked String
+  userId          String
+  reason          String?
+  timestamp       DateTime          @default(now())
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  stock Stock @relation(fields: [stockId], references: [id])
+  user  User  @relation(fields: [userId], references: [id])
+}
+
+model Machinery {
+  id          String              @id @default(uuid())
+  name        String
+  sku         String              @unique
+  description String?
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  movements   MachineryMovement[]
+}
+
+model MachineryMovement {
+  id          String   @id @default(uuid())
+  status      Boolean
+  machineryId String
+  userId      String
+  destination String
+  reason      String
+  total_units Int
+  available   Int
+  unavailable Int
+  timestamp   DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  machinery Machinery @relation(fields: [machineryId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model ListControl {
+  id          String   @id @default(uuid())
+  nameList    String
+  observation String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
