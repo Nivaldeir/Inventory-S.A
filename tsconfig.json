@@ -3,7 +3,7 @@
     "incremental": true,
     "typeRoots": [
       "./node_modules/@types",
-      "types/globals.d.ts"
+      "./src/@types"
     ],
     "resolveJsonModule": true,
     "target": "ES2021",
@@ -16,8 +16,14 @@
     "strictPropertyInitialization": false,
     "skipLibCheck": true
   },
+  "baseUrl": "./",
+  "paths": {
+    "@/*": [
+      "src/*"
+    ]
+  },
   "include": [
-    "src/**/*.ts"
+    "src"
   ],
   "exclude": [
     "./build",

@@ -14,15 +14,15 @@ enum StockMovementType {
   RETURN
 }
 
-model User {
-  id                String              @id @default(uuid())
-  name              String
-  role              String              @default("USER")
-  stockMovements    StockMovement[]
-  MachineryMovement MachineryMovement[]
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-}
+// model User {
+//   id                String              @id @default(uuid())
+//   name              String
+//   role              String              @default("USER")
+//   stockMovements    StockMovement[]
+//   MachineryMovement MachineryMovement[]
+//   createdAt         DateTime            @default(now())
+//   updatedAt         DateTime            @updatedAt
+// }
 
 model Category {
   id          Int      @id @default(autoincrement())
@@ -62,7 +62,7 @@ model StockMovement {
   updatedAt       DateTime          @updatedAt
 
   stock Stock @relation(fields: [stockId], references: [id])
-  user  User  @relation(fields: [userId], references: [id])
+  // user  User  @relation(fields: [userId], references: [id])
 }
 
 model Machinery {
@@ -90,13 +90,5 @@ model MachineryMovement {
   updatedAt   DateTime @updatedAt
 
   machinery Machinery @relation(fields: [machineryId], references: [id])
-  user      User      @relation(fields: [userId], references: [id])
-}
-
-model ListControl {
-  id          String   @id @default(uuid())
-  nameList    String
-  observation String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  // user      User      @relation(fields: [userId], references: [id])
 }
