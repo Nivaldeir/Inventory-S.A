@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo '🏗️👷 Verificando seu projeto antes de enviar para o repositório'
+
+# Verifica a formatação e os lints
+npm run lint || {
+    echo '❌ Erro de Lint - Por favor corrija os erros de lint antes de fazer o push'
+    exit 1
+}
+
+npm run test || {
+    echo '❌ Erro nos Testes - Por favor corrija os testes antes de fazer o push'
+    exit 1
+}
+
+npm run build || {
+    echo '❌ Erro no Build - Por favor corrija os erros de build antes de fazer o push'
+    exit 1
+}
+
+echo '✅ Tudo certo! Enviando para o repositório...'

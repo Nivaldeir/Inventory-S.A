@@ -9,3 +9,5 @@ const createCategory = new CreateCategory(repositoryCategory)
 const controllerCreateCategory = new CategoryCreateController("/api/category", "POST", createCategory)
 server.route(controllerCreateCategory)
 server.start(8080)
+
+const data = []
