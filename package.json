@@ -6,7 +6,13 @@
     "dev": "tsnd --env-file=.env src/main.ts",
     "lint": "eslint src/**/*.ts --fix",
     "format": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -22,7 +28,7 @@
     "eslint-plugin-n": "^16.6.2",
     "eslint-plugin-promise": "^6.6.0",
     "globals": "^16.0.0",
-    "husky": "^8.0.3",
+    "husky": "^9.1.7",
     "lint-staged": "^15.4.3",
     "prettier": "3.5.2",
     "typescript": "^5.7.3",
