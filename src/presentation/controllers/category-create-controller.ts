@@ -11,8 +11,9 @@ export class CategoryCreateController implements Http.Route {
   handler() {
     return async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       try {
-        await this.service.execute(request.body as any)
-        reply.status(200).send({ message: 'Success' })
+        const output = await this.service.execute(request.body as any)
+        console.log(output)
+        reply.status(200).send({ message: 'Success', data: output})
       } catch (error) {
         reply.status(500).send({ error: 'Internal Server Error' })
       }

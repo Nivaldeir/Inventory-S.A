@@ -1,6 +1,6 @@
 declare global {
   namespace App {
-    export interface ICategory {
+    interface ICategory {
       id: number
       name: string
       description: string | null
@@ -8,7 +8,7 @@ declare global {
       updatedAt: Date
     }
 
-    export interface IStock {
+    interface IStock {
       id: string
       sku: string
       name: string
@@ -22,7 +22,7 @@ declare global {
       updatedAt: Date
     }
 
-    export interface IStockMovement {
+    interface IStockMovement {
       id: string
       type: 'PROHIBITED' | 'EXIT' | 'CREATED' | 'RETURN'
       quantity: number
@@ -35,7 +35,7 @@ declare global {
       updatedAt: Date
     }
 
-    export interface IMachinery {
+    interface IMachinery {
       id: string
       name: string
       sku: string
@@ -44,7 +44,7 @@ declare global {
       updatedAt: Date
     }
 
-    export interface IMachineryMovement {
+    interface IMachineryMovement {
       id: string
       status: boolean
       machineryId: string
@@ -61,7 +61,7 @@ declare global {
   }
 
   namespace Repository {
-    export interface Category {
+    interface Category {
       create(data: {
         name: string
         description?: string
