@@ -5,14 +5,7 @@
   "scripts": {
     "dev": "tsnd --env-file=.env src/main.ts",
     "lint": "eslint src/**/*.ts --fix",
-    "format": "prettier --write .",
-    "prepare": "husky install"
-  },
-  "lint-staged": {
-    "*.ts": [
-      "eslint --fix",
-      "prettier --write"
-    ]
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
