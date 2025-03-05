@@ -1,5 +1,6 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
-import { CreateCategory } from '../../core/use-cases/create-category'
+import { AppError } from '../../errors/http'
+import { CreateCategory } from '../../core/aplication/commands/create-category'
 
 export class CategoryCreateController implements Http.Route {
   constructor(
@@ -12,10 +13,9 @@ export class CategoryCreateController implements Http.Route {
     return async (request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       try {
         const output = await this.service.execute(request.body as any)
-        console.log(output)
-        reply.status(200).send({ message: 'Success', data: output})
-      } catch (error) {
-        reply.status(500).send({ error: 'Internal Server Error' })
+        reply.status(200).send({ message: 'Success', data: output })
+      } catch (error: unknown) {
+        if (error instanceof AppError) return reply.status(error.statusCode).send(error)
       }
     }
   }

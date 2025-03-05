@@ -1,15 +1,7 @@
-import { NotFoundError, ValidationError } from "../../../errors"
 import { prisma } from "../../../utils/lib/prisma"
 
 export class CategoryRepository implements Repository.Category {
-  async create(data: {
-    name: string,
-    description?: string
-  }): Promise<App.ICategory> {
-    if (!data.name) {
-      throw new ValidationError('Name is required')
-    }
-
+  async create(data: App.ICategory): Promise<App.ICategory> {
     const output = await prisma.category.create({
       data: {
         name: data.name,
@@ -19,32 +11,37 @@ export class CategoryRepository implements Repository.Category {
     return output
   }
 
-  async findAll(): Promise<App.ICategory[]> {
-    return await prisma.category.findMany()
-  }
-
-  async findById(id: number): Promise<App.ICategory> {
-    const category = await prisma.category.findUnique({
-      where: { id }
+  async findAll(query?: any): Promise<App.ICategory[]> {
+    return await prisma.category.findMany({
+      where: query
     })
-
-    if (!category) {
-      throw new NotFoundError('Category')
-    }
-
-    return category
   }
 
-  async update(id: number, data: Partial<App.ICategory>): Promise<App.ICategory> {
-    await this.findById(id) 
+  async findById(id: string | number): Promise<App.ICategory | any> {
+    try {
+      const category = await prisma.category.findUnique({
+        where: { id: parseInt(id.toString()) }
+      })
+
+      return category
+    } catch (error) {
+      throw new Error('')
+    }
+  }
+
+  async update(id: string | number, data: Partial<App.ICategory>): Promise<App.ICategory> {
+    await this.findById(id)
 
     return await prisma.category.update({
-      where: { id },
-      data
+      where: { id: parseInt(id.toString()) },
+      data: {
+        name: data.name,
+        description: data.description
+      }
     })
   }
 
-  async delete(id: number | number[]): Promise<void> {
+  async delete(id: string[] | number[]): Promise<void> {
     const ids = Array.isArray(id) ? id : [id]
 
     await Promise.all(
@@ -56,7 +53,7 @@ export class CategoryRepository implements Repository.Category {
     await prisma.category.deleteMany({
       where: {
         id: {
-          in: ids
+          in: ids.map(e => parseInt(e.toString()))
         }
       }
     })

@@ -1,9 +1,22 @@
+import { UserArgs } from "@prisma/client/runtime/library"
+
 declare global {
   namespace App {
     interface ICategory {
-      id: number
+      id: number | string | null
       name: string
       description: string | null
+      createdAt: Date | null
+      updatedAt: Date | null
+    }
+
+    interface User {
+      id: string
+      name: string
+      email: string
+      password: string
+      aproved: boolean
+      role: string
       createdAt: Date
       updatedAt: Date
     }
@@ -17,9 +30,11 @@ declare global {
       minStock: number
       unitOfMeasurement: string
       status: string
+      quantity: number
       categoryId: number
       createdAt: Date
       updatedAt: Date
+      deletedAt?: Date | null
     }
 
     interface IStockMovement {
@@ -29,7 +44,7 @@ declare global {
       stockId: string
       locationStocked: string
       userId: string
-      reason?: string
+      reason: string | null
       timestamp: Date
       createdAt: Date
       updatedAt: Date
@@ -39,7 +54,7 @@ declare global {
       id: string
       name: string
       sku: string
-      description?: string
+      description: string | null
       createdAt: Date
       updatedAt: Date
     }
@@ -61,17 +76,18 @@ declare global {
   }
 
   namespace Repository {
-    interface Category {
-      create(data: {
-        name: string
-        description?: string
-      }): Promise<App.ICategory>
-
-      findAll(): Promise<App.ICategory[]>
-      findById(id: number): Promise<App.ICategory>
-      update(id: number, data: Partial<App.ICategory>): Promise<App.ICategory>
-      delete(id: number[]): Promise<void>
+    interface CRUD<T> {
+      create(data: Omit<T, "id" | "updatedAt" | "timestamp" | "createdAt" | "deletedAt">): Promise<T>
+      findAll(query: any | null): Promise<T[]>
+      findById(id: number | string): Promise<T | null>
+      update(id: string | number, data: Partial<T>): Promise<T | null>
+      delete(id: string[] | number[]): Promise<void>
     }
+    interface Category extends CRUD<App.ICategory> { }
+    interface Stock extends CRUD<App.IStock> { }
+    interface Machinery extends CRUD<App.IMachinery> { }
+    interface Movement<T> extends CRUD<T> { }
+    interface User extends CRUD<App.User> { }
   }
 
   namespace Http {
