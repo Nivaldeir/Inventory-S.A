@@ -1,3 +1,4 @@
+/// <reference path="../../../@types/index.d.ts" />
 import { ValidationError } from "../../../errors/http"
 
 type Input = {

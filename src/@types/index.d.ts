@@ -16,7 +16,7 @@ declare global {
       email: string
       password: string
       aproved: boolean
-      role: string
+      role: string | null
       createdAt: Date
       updatedAt: Date
     }

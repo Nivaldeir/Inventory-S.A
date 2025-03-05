@@ -8,9 +8,10 @@ export class UserRepository implements Repository.User {
   }
 
   async findAll(query: any | null): Promise<App.User[]> {
-    return await prisma.user.findMany({
+    const users = await prisma.user.findMany({
       where: query || {},
     });
+    return users.map(e => ({ ...e, password: "" }))
   }
 
   async findById(id: number | string): Promise<App.User | null> {
